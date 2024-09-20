@@ -50,6 +50,13 @@
         </div>
     </div>
 
+    <div class="body">
+        <div id="root"></div>
+        <!-- Nueva sección para mostrar ambas imágenes juntas -->
+        <div id="displayCredentials" class="credentials-display"></div>
+    </div>
+
+
     <script>
         const product = [
             {
@@ -160,47 +167,71 @@
 
         const categories = [...new Set(product.map((item) => { return item }))]
 
-        document.getElementById('searchBar').addEventListener('keyup', (e) => {
-            const searchData = e.target.value.toLowerCase();
-            const filteredData = categories.filter((item) => {
-                return (
-                    item.title.toLowerCase().includes(searchData)
-                )
-            })
-            displayItem(filteredData)
-        });
+document.getElementById('searchBar').addEventListener('keyup', (e) => {
+    const searchData = e.target.value.toLowerCase();
+    const filteredData = categories.filter((item) => {
+        return (
+            item.title.toLowerCase().includes(searchData)
+        )
+    })
+    displayItem(filteredData)
+});
 
-        const displayItem = (items) => {
-            document.getElementById('root').innerHTML = items.map((item) => {
-                var { coverImage, frontImage, backImage, title, title2 } = item;
-                return (
-                    `<div class='box'>
-                <div class='img-box'>
-                <img class='images' src=${coverImage}></img> <!-- Mostramos la portada aquí -->
-                </div> 
-                <div class='bottom'>
-                <p>${title}</p>
-                <p>${title2}</p>
-                <button onclick="openImages('${frontImage}', '${backImage}')">Ver credencial</button>
-                </div>
-            </div>`
-                )
-            }).join('')
-        };
+const displayItem = (items) => {
+    document.getElementById('root').innerHTML = items.map((item) => {
+        var { coverImage, frontImage, backImage, title, title2 } = item;
+        return (
+            `<div class='box'>
+        <div class='img-box'>
+        <img class='images' src=${coverImage}></img> <!-- Mostramos la portada aquí -->
+        </div> 
+        <div class='bottom'>
+        <p>${title}</p>
+        <p>${title2}</p>
+        <button onclick="openImages('${frontImage}', '${backImage}')">Ver credencial</button>
+        </div>
+    </div>`
+        )
+    }).join('')
+};
 
-        // Función para abrir ambas imágenes en nuevas pestañas
-        function openImages(frontImage, backImage) {
-            window.open(frontImage, '_blank'); // Abre la imagen frontal
-            setTimeout(() => { // Retrasa la apertura de la imagen trasera
-                window.open(backImage, '_blank');
-            }, 500); // Retraso de 500 ms
-        }
+// Función para mostrar ambas imágenes con botones de descarga y un botón de "Salir"
+function openImages(frontImage, backImage) {
+    const displayCredentials = document.getElementById('displayCredentials');
+    
+    // Insertamos el botón "Salir" y las dos imágenes con sus botones de descarga
+    displayCredentials.innerHTML = `
+        <div class="exit-section">
+            <button onclick="closeCredentials()">Salir</button>
+        </div>
+        <div class="credential-section">
+            <img src="${frontImage}" alt="Credencial - Frente">
+            <a href="${frontImage}" download="credencial_frente">
+                <button>Descargar Frente</button>
+            </a>
+        </div>
+        <div class="credential-section">
+            <img src="${backImage}" alt="Credencial - Dorso">
+            <a href="${backImage}" download="credencial_dorso">
+                <button>Descargar Dorso</button>
+            </a>
+        </div>
+    `;
+    
+    // Hacemos que el contenedor con las imágenes aparezca en la parte superior
+    displayCredentials.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
-        displayItem(categories);
+// Función para ocultar las credenciales al hacer clic en el botón "Salir"
+function closeCredentials() {
+    const displayCredentials = document.getElementById('displayCredentials');
+    displayCredentials.innerHTML = '';  // Limpia el contenido del contenedor de credenciales
+}
 
+displayItem(categories);
     </script>
 
-    
+
 
 
     <script src="searchengine.js"></script>

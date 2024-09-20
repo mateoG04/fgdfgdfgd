@@ -948,27 +948,4 @@ p {
     .escitorio {
         display: none;
     }
-
-    .video {
-     height: 10px;
-     width: 100%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    }
-
-    .maxicumple {
-        width: 100px;
-     width: 100%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    }
-
 }
